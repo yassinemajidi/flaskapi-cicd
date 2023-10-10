@@ -9,7 +9,7 @@ application:test:
       - develop
       - /^hotfix.*$/
     changes:
-      - application/python-docker/**/*
+      - application/api/**/*
   variables:
     ASSET_NAME: application
     APP_NAME: python-docker
@@ -30,7 +30,7 @@ application:build:
     refs:
       - main
     changes:
-      - application/python-docker/**/*
+      - application/api/**/*
   variables:
     ASSET_NAME: application
     APP_NAME: python-docker
