@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Ignore Terraform files and directories
 *.tfstate
 *.tfstate.*
@@ -10,4 +11,3 @@ terraform.log
 # Ignore Python __pycache__ files
 __pycache__/
 *.pyc
-
