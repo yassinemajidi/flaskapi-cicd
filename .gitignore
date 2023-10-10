@@ -1,0 +1,13 @@
+# Ignore Terraform files and directories
+*.tfstate
+*.tfstate.*
+terraform.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+.terraformrc
+terraform.log
+
+# Ignore Python __pycache__ files
+__pycache__/
+*.pyc
+

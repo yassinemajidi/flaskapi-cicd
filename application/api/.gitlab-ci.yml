@@ -1,0 +1,43 @@
+application:test:
+  stage: test
+  allow_failure: false
+  image:
+    name: python:3.8
+  only:
+    refs:
+      - main
+      - develop
+      - /^hotfix.*$/
+    changes:
+      - application/python-docker/**/*
+  variables:
+    ASSET_NAME: application
+    APP_NAME: python-docker
+  before_script:
+    - cd ${ASSET_NAME}/${APP_NAME}
+    - pip install -r requirements.txt
+  script:
+    - python -m pytest --capture=no tests/test.py
+
+application:build:
+  stage: build
+  when: on_success
+  image:
+    name: docker:latest
+  services:
+    - docker:dind
+  only:
+    refs:
+      - main
+    changes:
+      - application/python-docker/**/*
+  variables:
+    ASSET_NAME: application
+    APP_NAME: python-docker
+  before_script:
+    - cd ${ASSET_NAME}/${APP_NAME}
+  script:
+    - docker version
+    - docker build -t $CI_REGISTRY_IMAGE:latest .
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - docker push $CI_REGISTRY_IMAGE:latest
