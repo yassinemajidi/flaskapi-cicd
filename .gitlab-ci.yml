@@ -4,3 +4,7 @@ stages:
 
 include:
   - local: application/api/.gitlab-ci.yml
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8dfa8df31a80f37f5c80f83e7a77eeb9e44662de
