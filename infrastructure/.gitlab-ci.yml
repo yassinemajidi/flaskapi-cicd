@@ -72,4 +72,4 @@ infrastructure:apply:
     - cd ${ASSET_NAME}
   script:
     - terraform init --reconfigure -input=false
-    - terraform apply -input=false -auto-approve -compact-warnings plan.tfplan
+    - terraform apply -input=false -auto-approve
