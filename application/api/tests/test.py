@@ -1,6 +1,6 @@
 import unittest
 import warnings
-from application.api.src.handlers import images
+from src.handlers import images
 
 
 class UnitTest(unittest.TestCase):
