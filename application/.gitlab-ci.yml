@@ -1,6 +1,0 @@
-stages:
-  - test
-  - build
-
-include:
-  - local: api/.gitlab-ci.yml
