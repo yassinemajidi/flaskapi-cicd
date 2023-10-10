@@ -35,7 +35,7 @@ resource "kubernetes_deployment" "python-webserver" {
 
       spec {
         container {
-          image = "yassinemajidi/randomimage-api:1.0.0"
+          image = var.python_webserver_image
           name  = local.python-webserver-name
           port {
             name           = "containerport"

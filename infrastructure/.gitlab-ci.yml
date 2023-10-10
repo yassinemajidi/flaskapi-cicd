@@ -1,0 +1,75 @@
+infrastructure:validate:
+  stage: validate
+  image:
+    name: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
+    entrypoint:
+      - '/usr/bin/env'
+      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+      - 'AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}'
+      - 'AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}'
+      - 'AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}'
+  variables:
+    ASSET_NAME: infrastructure
+  only:
+    refs:
+      - main
+      - develop
+    changes:
+      - infrastructure/**/*
+  before_script:
+    - cd ${ASSET_NAME}
+  script:
+    - terraform init --reconfigure -input=false
+    - terraform validate -json
+
+infrastructure:plan:
+  stage: plan
+  image:
+    name: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
+    entrypoint:
+      - '/usr/bin/env'
+      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+      - 'AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}'
+      - 'AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}'
+      - 'AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}'
+  variables:
+    ASSET_NAME: infrastructure
+    INFR_FILE: terraform.tfvars
+  only:
+    refs:
+      - main
+      - develop
+    changes:
+      - infrastructure/**/*
+  before_script:
+    - cd ${ASSET_NAME}
+  script:
+    - terraform init --reconfigure -input=false
+    - terraform plan -input=false -out=plan.tfplan -var-file=${INFR_FILE} -var="registry_username=${CI_REGISTRY_USER}" -var="registry_password=${CI_REGISTRY_PASS}" -var="registry_email=${CI_REGISTRY_EMAIL}" -var="login_token=${SVC_TERRAFORM_K8S}"
+  artifacts:
+    paths:
+      - ${ASSET_NAME}/plan.tfplan
+
+infrastructure:apply:
+  stage: apply
+  image:
+    name: registry.gitlab.com/gitlab-org/terraform-images/stable:latest
+    entrypoint:
+      - '/usr/bin/env'
+      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+      - 'AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}'
+      - 'AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}'
+      - 'AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}'
+  when: manual
+  variables:
+    ASSET_NAME: infrastructure
+  only:
+    refs:
+      - main
+    changes:
+      - infrastructure/**/*
+  before_script:
+    - cd ${ASSET_NAME}
+  script:
+    - terraform init --reconfigure -input=false
+    - terraform apply -input=false -auto-approve -compact-warnings plan.tfplan

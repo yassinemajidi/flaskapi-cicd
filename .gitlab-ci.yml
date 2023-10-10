@@ -1,6 +1,8 @@
 stages:
   - test
   - build
-
+  - validate
+  - plan
 include:
   - local: application/api/.gitlab-ci.yml
+  - local: infrastructure/.gitlab-ci.yml

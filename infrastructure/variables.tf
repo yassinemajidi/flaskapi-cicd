@@ -9,3 +9,7 @@ variable "api_staging_bucket" {
 variable "api_terraform_state" {
   type = string
 }
+
+variable "python_webserver_image" {
+  type = string
+}

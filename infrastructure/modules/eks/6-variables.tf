@@ -6,3 +6,7 @@ variable "s3_policy_arn" {
   description = "The ARN of the S3 upload policy"
   type        = string
 }
+
+variable "python_webserver_image" {
+  type = string
+}
