@@ -54,3 +54,5 @@ I have this gitlab cicd in both app and infra folders with this stages
   - apply
 
 This can automate the creation of the image of the app and the infrastructure to deploy it.
+
+You can access the pipelines in my gitlab repository https://gitlab.com/yassinemidfig/flaskapi-cicd
